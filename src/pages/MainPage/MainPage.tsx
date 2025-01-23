@@ -10,11 +10,16 @@ import { GenreDTO } from "../../Models/res/Genre"
 
 function  MainPage() {
 
+    localStorage.removeItem("TOKEN")
+
     const [books, setBooks] = useState<BookDTO[] | null>(null)
     const [genre, setGenre] = useState<GenreDTO[] | null>(null)
    
     const [iter, setIter] = useState<number>(1)
+    const [showLoadButton, setShowLoadButton] = useState<boolean>(false)
+
     function load() {
+        setShowLoadButton(false)
         getSomeBooks(5,iter).then(res =>{
             if(!res.ok){
                 //error
@@ -22,7 +27,8 @@ function  MainPage() {
                 res.json().then(js => {
                     
                     setBooks((prevArray) => [...(prevArray || []), ...js]);
-                    setIter(iter + 1)                    
+                    setIter(iter + 1)    
+                    setShowLoadButton(true)                
                 })
             }
         })
@@ -44,6 +50,7 @@ function  MainPage() {
                     console.log(js)
                     setBooks(js);
                     setIter(iter + 1)
+                    setShowLoadButton(true)
                 })
             }
         })
@@ -65,16 +72,18 @@ function  MainPage() {
                 {genre?.map((item, _) => 
                     <Genre name={item.genreName} key = {item.id} image="https://hips.hearstapps.com/hmg-prod/images/best-romance-novels-2023-643811403d9fa.jpg?crop=0.6697674418604651xw:1xh;center,top&resize=1200:*"></Genre>
                 )}
-                <Genre name="Інше" key = {0} image="https://hips.hearstapps.com/hmg-prod/images/best-romance-novels-2023-643811403d9fa.jpg?crop=0.6697674418604651xw:1xh;center,top&resize=1200:*"></Genre>
+                {genre ? 
+                <Genre name="Інше" key = {0} image="https://hips.hearstapps.com/hmg-prod/images/best-romance-novels-2023-643811403d9fa.jpg?crop=0.6697674418604651xw:1xh;center,top&resize=1200:*"></Genre> : <></>}
+                
             </div>
             <p style={{ fontSize: '20px', fontWeight: 'bold', margin: "10px"}}>Новинки</p>
             <div className="main-new">
                 {books?.map((item, _) => 
-                    <BookElement key={item.id} name={item.bookName} price={item.price} stock={item.stock} image={item.image}></BookElement>
+                    <BookElement key={item.id} id={item.id} name={item.bookName} price={item.price} stock={item.stock} image={item.image}></BookElement>
                 ) }
             </div>
             
-            {iter != -1? <button onClick={load} className="main-load-more-button">Завантажити ще</button> : <div></div> }
+            {iter != -1 && showLoadButton ? <button onClick={load} className="main-load-more-button">Завантажити ще</button> : <div></div> }
             
             <Footer></Footer>
         </>

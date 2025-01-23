@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import "./BookElement.css"
 
 interface BookElementProps {
@@ -5,13 +6,13 @@ interface BookElementProps {
     image: string;
     price: number;
     stock: number;
-    key: number;
+    id: number;
 }
 
 function BookElement(props: BookElementProps) {
-
+    const navigate = useNavigate()
     return (
-    <div className="book-card">
+    <div className="book-card" onClick={()=> {navigate("/book/" + props.id)}}>
         <img className="book-image" src = {props.image}></img>
         <div className="book-info">
             <div className="book-name">

@@ -1,0 +1,169 @@
+.book-container {
+    font-family: sans-serif;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+}
+
+.book-title {
+    font-size: 1.8em; 
+    margin-bottom: 10px; 
+    text-align: center;
+    color: #333;
+}
+
+
+
+.book-details {
+    display: flex; 
+    flex-direction: column; 
+    width: 100%; 
+    margin-top: 20px; 
+}
+
+.book-detail-item {
+    display: flex; 
+    flex-direction: column; 
+    margin-bottom: 10px; 
+}
+
+.book-label {
+    font-weight: bold;
+    color: #555;
+    text-align: left; 
+    padding-right: 0; 
+    margin-bottom: 5px; 
+}
+
+.book-value {
+    color: #333;
+    text-align: left; 
+}
+
+.book-description {
+    white-space: pre-line;
+    text-align: justify;
+}
+
+.book-price-item {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-price-label {
+    font-size: 1.1em; 
+}
+
+.book-price-value {
+    font-size: 1.3em; 
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.book-add-to-cart-button {
+    background-color: #000;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.book-add-to-cart-button:hover {
+    background-color: #1f1f1f;
+}
+
+.book-cover {
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+
+@media (min-width: 800px) {
+    .book-container {
+        width: 90%;
+        flex-direction: row; 
+        align-items: flex-start; 
+    }
+
+    .book-title {
+        font-size: 2em; 
+        text-align: left; 
+        margin-top: 20px; 
+        margin-left: 10vw; 
+        width: auto; 
+        order: -1; 
+        margin-right: 20px; 
+    }
+
+    .book-cover {
+        width: 100%; 
+        margin-bottom: 0; 
+    }
+
+    .book-details {
+        flex-direction: column; 
+        margin-top: 0;
+        margin-left: 20px; 
+        width: auto; 
+    }
+
+    .book-detail-item {
+        flex-direction: row; 
+        margin-bottom: 5px;
+        align-items: baseline; 
+    }
+
+    .book-label {
+        text-align: right; 
+        padding-right: 10px; 
+        margin-bottom: 0; 
+        width: auto; 
+    }
+
+    .book-value {
+        text-align: left; 
+        width: auto;
+    }
+
+    .book-price-item {
+        justify-content: flex-start; 
+    }
+
+    .book-price-label {
+        font-size: 1.2em; 
+    }
+
+    .book-price-value {
+        font-size: 1.4em;
+    }
+
+    .book-add-to-cart-button {
+        width: auto; 
+        display: inline-block; 
+    }
+    .book-cover-image {
+        width: 100%;
+        max-width: 800px;
+        height: auto;
+        border-radius: 4px;
+    }
+    .book-image-title-cover {
+        width: 100%
+    }
+    .book-add-to-cart-button{
+        max-width: 200px;
+    }
+}
