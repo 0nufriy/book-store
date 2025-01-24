@@ -74,7 +74,10 @@
         flex-direction: row; 
         width: 100%; 
     }
-
+    .book-stock {
+        font-size: 0.9em;
+        padding-bottom: 80px;
+    }
     .book-image {
         width: 40%; 
         max-width: 150px; 
