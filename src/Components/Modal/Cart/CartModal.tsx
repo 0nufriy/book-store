@@ -73,7 +73,7 @@ function CartModal(props: CartModalDTO) {
                   <p className='cart-total'>Загальна вартість: {props.cart.getCart.reduce((acc,item)=>acc + item.price * item.count,0)} грн</p>
                 )}
                   </div>
-                  <button className="cart-done-button" onClick={() => {}}>Оформити замовлення</button>
+                 { props.cart.getCart.length !== 0 && <button className="cart-done-button" onClick={() => {}}>Оформити замовлення</button>}
             </div>
         </div>
     );
