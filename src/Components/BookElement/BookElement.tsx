@@ -40,7 +40,7 @@ function BookElement(props: BookElementProps) {
             </div>
             <div>
                 <div className="book-price"> {props.price + " грн."}</div>
-                <AddToCartButton disable={disable} book={props} class="book-button"></AddToCartButton>
+                <AddToCartButton disable={disable} book={props} class="book-button" classDisable="book-button-disable"></AddToCartButton>
             </div>
         </div>
         

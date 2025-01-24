@@ -54,10 +54,22 @@
     font-size: 1em;
 }
 
+.book-button-disable {
+    background-color: #757575; 
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
 .book-button:hover {
     background-color: #1f1f1f;
 }
 .book-info {
+    
+    width: 100%;
     display: flex;
     flex-direction: column; 
     height: 100%;

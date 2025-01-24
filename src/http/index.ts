@@ -1,3 +1,4 @@
+import { CatalogeDTO } from "../Models/req/CatalogeDTO";
 import { LoginDTO } from "../Models/req/LoginDTO";
 import { RegistDTO } from "../Models/req/RegistDTO";
 
@@ -31,6 +32,14 @@ export function getSomeBooks(count: number, iter: number){
     });
 }
 
+export function getCatalogeBooks(count: number, iter: number, cataloge: CatalogeDTO){
+    console.log(BASE_URL + "/Book/getCataloge?count=" + count + "&iter=" + iter + "&minPrice=" + cataloge.minPrice + "&maxPrice=" + cataloge.maxPrice + "&genreId=" + cataloge.genreId + "&sort=" + cataloge.sort)
+    return requestJSON({
+        url: BASE_URL + "/Book/getCataloge?count=" + count + "&iter=" + iter + "&minPrice=" + cataloge.minPrice + "&maxPrice=" + cataloge.maxPrice + "&genreId=" + cataloge.genreId + "&sort=" + cataloge.sort,
+        method: 'GET'
+    });
+}
+
 export function getOneBook(id: string){
     return requestJSON({
         url: BASE_URL + "/Book/getOne/" + id,
@@ -42,6 +51,13 @@ export function getOneBook(id: string){
 export function getFiveGenre(){
     return requestJSON({
         url: BASE_URL + "/Book/genre/five",
+        method: 'GET'
+    });
+}
+
+export function getAllGenre(){
+    return requestJSON({
+        url: BASE_URL + "/Book/genre",
         method: 'GET'
     });
 }

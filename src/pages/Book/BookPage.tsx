@@ -7,6 +7,8 @@ import { BookDTO } from "../../Models/res/Book";
 import { CartDTO } from "../../Models/generic/CartDTO";
 import AddToCartButton from "../../Components/AddToCartButton/AddToCartButton";
  import {BookElementProps} from "../../Components/BookElement/BookElement"
+import BackButton from "../../Components/BackButton/BackButton";
+import Footer from "../../Components/Footer/Footer";
 
 function BookPage(cart: CartDTO) {
 
@@ -55,13 +57,23 @@ function BookPage(cart: CartDTO) {
         }
     },[])
 
+    useEffect(()=>{
+        if (bookModal){
+            const updatedCart: BookElementProps = {...bookModal, cart: cart}
+            setBookModal(updatedCart);
+        }
+    },[cart])
+
 
     return (
     <>
         <Header getCart={cart.getCart} setCart={cart.setCart}></Header>
         {book?
         <div>
-            <h2 className="book-title">{book.bookName}</h2>
+            <div>
+                <BackButton></BackButton>
+                <h2 className="book-title">{book.bookName}</h2>
+            </div>
             <div className="book-container">
                 <div className="book-image-title-cover">
                     <div className="book-cover">
@@ -75,11 +87,10 @@ function BookPage(cart: CartDTO) {
                         { disable  ? "Немає в наявності"  : book.stock >=20 ?   "В наявності" : "Закінчується" }
                     </div>
             <div className="book-price-item book-detail-item">
-                    <strong className="book-label book-price-label">Ціна:</strong>
-                    <span className="book-value book-price-value">{book.price} грн</span>
-                    
-                </div>
-                <AddToCartButton disable={disable} book={bookModal} class="book-add-to-cart-button"></AddToCartButton>
+                <strong className="book-label book-price-label">Ціна:</strong>
+                <span className="book-value book-price-value">{book.price} грн</span>
+            </div>
+            <AddToCartButton disable={disable} book={bookModal} class="book-add-to-cart-button" classDisable="book-add-to-cart-button-disable"></AddToCartButton>
                 
                 <div className="book-detail-item">
                     <strong className="book-label">Автор:</strong>
@@ -111,6 +122,7 @@ function BookPage(cart: CartDTO) {
                 </div>
             </div>
         </div>
+        <Footer></Footer>
        </div>
         : <></>}
     </>

@@ -1,15 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import "./Genre.css"
 
 interface GenreProps {
     name: string;
     image: string;
-    key: number;
+    id: number;
 }
 
 function Genre(props: GenreProps) {
-
+    const navigate = useNavigate()
     return (
-    <div className="genre-card">
+    <div onClick={()=> {navigate("/cataloge", { state: { id: props.id } })}} className="genre-card">
         <div className="genre-name">
             {props.name}
         </div>

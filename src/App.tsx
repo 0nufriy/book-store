@@ -4,6 +4,7 @@ import MainPage from './pages/MainPage/MainPage';
 import BookPage from './pages/Book/BookPage';
 import { useState } from 'react';
 import { CartElementDTO } from './Models/generic/CartElementDTO';
+import CatalogePage from './pages/Cataloge/CatalogePage';
 
 function App() {
   let [cart, setCart] = useState<CartElementDTO[]>([]);
@@ -15,6 +16,9 @@ function App() {
         }></Route>
         <Route index path='/book/:bookid' element={
             <BookPage getCart={cart} setCart={setCart}></BookPage>
+        }></Route>
+        <Route index path='/cataloge' element={
+            <CatalogePage getCart={cart} setCart={setCart}></CatalogePage>
         }></Route>
 
       <Route index path='*' element={

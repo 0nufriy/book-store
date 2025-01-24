@@ -11,7 +11,7 @@
       flex: 0 0 25%; 
       margin-bottom: 10px; 
   }
-  .main-new {
+  .main-cataloge {
     display: grid; 
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     gap: 10px;
@@ -60,7 +60,7 @@
           flex: 0 0 auto; 
           width: 100%; 
       }
-      .main-new {
+      .main-cataloge {
         display: flex;
         align-items: start;
         padding: 10px;

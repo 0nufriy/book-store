@@ -34,7 +34,7 @@ function Header(cart: CartDTO) {
         <div onClick={()=> {navigate("/")}} className="header-item" style={{ fontSize: '20px', fontWeight: 'bold', textTransform: 'uppercase', cursor: "pointer" }}>
             Книжковий
         </div>
-        <button className="header-button header-item">Каталог</button>
+        <button onClick={()=> {navigate("/cataloge")}} className="header-button header-item">Каталог</button>
         <input className="header-input" type="text" placeholder="Знайдіть свою книжку..." />
         <div className="header-button-group">
             <button onClick={() => {setCartModal(true)}} className="header-button header-item">Кошик: {cartPrice} грн</button>

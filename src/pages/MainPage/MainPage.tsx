@@ -12,9 +12,6 @@ import { CartDTO } from "../../Models/generic/CartDTO"
 
 
 function  MainPage(cart: CartDTO) {
-
-    localStorage.removeItem("TOKEN")
-
     const [books, setBooks] = useState<BookDTO[] | null>(null)
     const [genre, setGenre] = useState<GenreDTO[] | null>(null)
    
@@ -72,14 +69,14 @@ function  MainPage(cart: CartDTO) {
             <Header getCart={cart.getCart} setCart={cart.setCart}></Header>
             <div className="main-ganre">
                 {genre?.map((item, _) => 
-                    <Genre name={item.genreName} key = {item.id} image="https://hips.hearstapps.com/hmg-prod/images/best-romance-novels-2023-643811403d9fa.jpg?crop=0.6697674418604651xw:1xh;center,top&resize=1200:*"></Genre>
+                    <Genre name={item.genreName} key = {item.id} id = {item.id} image="https://hips.hearstapps.com/hmg-prod/images/best-romance-novels-2023-643811403d9fa.jpg?crop=0.6697674418604651xw:1xh;center,top&resize=1200:*"></Genre>
                 )}
                 {genre ? 
-                <Genre name="Інше" key = {0} image="https://hips.hearstapps.com/hmg-prod/images/best-romance-novels-2023-643811403d9fa.jpg?crop=0.6697674418604651xw:1xh;center,top&resize=1200:*"></Genre> : <></>}
+                <Genre name="Інше" key = {0} id = {0} image="https://hips.hearstapps.com/hmg-prod/images/best-romance-novels-2023-643811403d9fa.jpg?crop=0.6697674418604651xw:1xh;center,top&resize=1200:*"></Genre> : <></>}
                 
             </div>
             <p style={{ fontSize: '20px', fontWeight: 'bold', margin: "10px"}}>Новинки</p>
-            <div className="main-new">
+            <div className="main-cataloge">
                 {books?.map((item, _) => 
                     <BookElement key={item.id} cart={cart} id={item.id} name={item.bookName} price={item.price} stock={item.stock} image={item.image}></BookElement>
                 ) }
