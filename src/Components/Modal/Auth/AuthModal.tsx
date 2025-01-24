@@ -61,7 +61,7 @@ function AuthModal(props: AuthModalDTO) {
         props.setRegistrShow(true)
     }
     return (
-        <div className="auth-modal-overlay" ref={modalOverlayRef} onClick={handleOverlayClick}>
+        <div className="auth-modal-overlay" ref={modalOverlayRef} onMouseDown={handleOverlayClick}>
             <div className="auth-modal">
                 <div className="auth-modal-header">
                   <h2>Авторизація</h2>

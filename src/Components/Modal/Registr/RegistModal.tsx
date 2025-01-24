@@ -117,7 +117,7 @@ function RegistModal(props: RegistModalDTO) {
     }
 
     return (
-        <div className="reigst-modal-overlay" ref={modalOverlayRef} onClick={handleOverlayClick}>
+        <div className="reigst-modal-overlay" ref={modalOverlayRef} onMouseDown={handleOverlayClick}>
             <div className="reigst-modal">
                 <div className="reigst-modal-header">
                   <h2>Реєстрація</h2>

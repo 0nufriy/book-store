@@ -89,7 +89,9 @@
     margin-bottom: 20px;
     width: 100%;
 }
-
+.book-page-stock{
+    margin-bottom: 10px
+}
 
 @media (min-width: 800px) {
     .book-container {
@@ -138,6 +140,9 @@
         width: auto;
     }
 
+    .book-description {
+        text-align: justify;
+    }
     .book-price-item {
         justify-content: flex-start; 
     }

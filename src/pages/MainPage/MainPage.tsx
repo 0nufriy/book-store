@@ -7,8 +7,11 @@ import "./MainPage.css"
 import { getFiveGenre, getSomeBooks } from "../../http"
 import { BookDTO } from "../../Models/res/Book"
 import { GenreDTO } from "../../Models/res/Genre"
+import { CartDTO } from "../../Models/generic/CartDTO"
 
-function  MainPage() {
+
+
+function  MainPage(cart: CartDTO) {
 
     localStorage.removeItem("TOKEN")
 
@@ -47,7 +50,6 @@ function  MainPage() {
                 //error
             }else{
                 res.json().then(js => {
-                    console.log(js)
                     setBooks(js);
                     setIter(iter + 1)
                     setShowLoadButton(true)
@@ -67,7 +69,7 @@ function  MainPage() {
 
     return (
         <>
-            <Header></Header>
+            <Header getCart={cart.getCart} setCart={cart.setCart}></Header>
             <div className="main-ganre">
                 {genre?.map((item, _) => 
                     <Genre name={item.genreName} key = {item.id} image="https://hips.hearstapps.com/hmg-prod/images/best-romance-novels-2023-643811403d9fa.jpg?crop=0.6697674418604651xw:1xh;center,top&resize=1200:*"></Genre>
@@ -79,7 +81,7 @@ function  MainPage() {
             <p style={{ fontSize: '20px', fontWeight: 'bold', margin: "10px"}}>Новинки</p>
             <div className="main-new">
                 {books?.map((item, _) => 
-                    <BookElement key={item.id} id={item.id} name={item.bookName} price={item.price} stock={item.stock} image={item.image}></BookElement>
+                    <BookElement key={item.id} cart={cart} id={item.id} name={item.bookName} price={item.price} stock={item.stock} image={item.image}></BookElement>
                 ) }
             </div>
             

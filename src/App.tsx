@@ -2,17 +2,19 @@ import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MainPage from './pages/MainPage/MainPage';
 import BookPage from './pages/Book/BookPage';
+import { useState } from 'react';
+import { CartElementDTO } from './Models/generic/CartElementDTO';
 
 function App() {
-
+  let [cart, setCart] = useState<CartElementDTO[]>([]);
   return (
     <BrowserRouter>
       <Routes>
         <Route index path='/' element={
-            <MainPage></MainPage>
+            <MainPage getCart={cart} setCart={setCart}></MainPage>
         }></Route>
         <Route index path='/book/:bookid' element={
-            <BookPage></BookPage>
+            <BookPage getCart={cart} setCart={setCart}></BookPage>
         }></Route>
 
       <Route index path='*' element={
@@ -20,6 +22,7 @@ function App() {
         }></Route>
       </Routes>
     </BrowserRouter>
+   
   )
 }
 
