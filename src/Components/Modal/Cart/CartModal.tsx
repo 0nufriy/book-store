@@ -74,6 +74,7 @@ function CartModal(props: CartModalDTO) {
                 )}
                   </div>
                  { props.cart.getCart.length !== 0 && <button className="cart-done-button" onClick={() => {}}>Оформити замовлення</button>}
+
             </div>
         </div>
     );
