@@ -55,7 +55,7 @@ function BookPage(cart: CartDTO) {
         else{
             //error
         }
-    },[])
+    },[bookid])
 
     useEffect(()=>{
         if (bookModal){
@@ -67,7 +67,7 @@ function BookPage(cart: CartDTO) {
 
     return (
     <>
-        <Header getCart={cart.getCart} setCart={cart.setCart}></Header>
+        <Header defaultSearchValue={null} setSeatchCataloge={null} getCart={cart.getCart} setCart={cart.setCart}></Header>
         {book?
         <div>
             <div>

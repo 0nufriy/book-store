@@ -33,9 +33,43 @@ export function getSomeBooks(count: number, iter: number){
 }
 
 export function getCatalogeBooks(count: number, iter: number, cataloge: CatalogeDTO){
-    console.log(BASE_URL + "/Book/getCataloge?count=" + count + "&iter=" + iter + "&minPrice=" + cataloge.minPrice + "&maxPrice=" + cataloge.maxPrice + "&genreId=" + cataloge.genreId + "&sort=" + cataloge.sort)
+
+   
+
+    if(cataloge.search.length >= 3){
+        console.log(BASE_URL + "/Book/getCataloge?count=" + count + 
+            "&iter=" + iter + 
+            "&minPrice=" + cataloge.minPrice + 
+            "&maxPrice=" + cataloge.maxPrice + 
+            "&genreId=" + cataloge.genreId + 
+            "&sort=" + cataloge.sort +
+            "&search=" + cataloge.search,)
+        return requestJSON({
+            url: BASE_URL + "/Book/getCataloge?count=" + count + 
+                            "&iter=" + iter + 
+                            "&minPrice=" + cataloge.minPrice + 
+                            "&maxPrice=" + cataloge.maxPrice + 
+                            "&genreId=" + cataloge.genreId + 
+                            "&sort=" + cataloge.sort +
+                            "&search=" + cataloge.search,
+            method: 'GET'
+        });
+    }
+
     return requestJSON({
-        url: BASE_URL + "/Book/getCataloge?count=" + count + "&iter=" + iter + "&minPrice=" + cataloge.minPrice + "&maxPrice=" + cataloge.maxPrice + "&genreId=" + cataloge.genreId + "&sort=" + cataloge.sort,
+        url: BASE_URL + "/Book/getCataloge?count=" + count + 
+                        "&iter=" + iter + 
+                        "&minPrice=" + cataloge.minPrice + 
+                        "&maxPrice=" + cataloge.maxPrice + 
+                        "&genreId=" + cataloge.genreId + 
+                        "&sort=" + cataloge.sort,
+        method: 'GET'
+    });
+}
+
+export function getSearchBooks(search: string){
+    return requestJSON({
+        url: BASE_URL + "/Book/getCataloge?count=" + 3 + "&iter=" + 1 + "&minPrice=" + 0 + "&maxPrice=" + 2000 + "&genreId=" + 0 + "&sort=" + "def" + "&search=" + search,
         method: 'GET'
     });
 }

@@ -26,22 +26,26 @@ function  CatalogePage(cart: CartDTO) {
 
     var genreIdDef = 0;
     try{
-        const { id } = state; 
-        genreIdDef = id;
+        const id = state.id; 
+        if(id) genreIdDef = id;
+    }catch{
+        
+    }
+  
+    var searchValue = "";
+    try{
+        const search = state.search; 
+        if(search) searchValue = search;
     }catch{
         
     }
 
-    function setGenreDefault(id: number){
-        console.log()
-    }
-    
-  
     const [selectedGenre, setSelectedGenre] = useState<number>(genreIdDef);
     const [minPrice, setMinPrice] = useState<number>(0);
     const [maxPrice, setMaxPrice] = useState<number>(2000);
     const [sortOption, setSortOption] = useState<string>('default');
-    const [catalogeDTO, setCatalogeDTO] = useState<CatalogeDTO>({maxPrice: 2000, minPrice: 0, sort: "default", genreId: genreIdDef})
+    const [searchString, setSeatchString] = useState<string>(searchValue);
+    const [catalogeDTO, setCatalogeDTO] = useState<CatalogeDTO>({maxPrice: 2000, minPrice: 0, sort: "default", genreId: genreIdDef, search: searchValue})
 
     const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const ganreId = parseInt(e.target.value)
@@ -52,7 +56,7 @@ function  CatalogePage(cart: CartDTO) {
         setSortOption(e.target.value);
       };
   
-
+     
     function load() {
         setShowLoadButton(false)
         getCatalogeBooks(10,iter, catalogeDTO).then(res =>{
@@ -63,7 +67,7 @@ function  CatalogePage(cart: CartDTO) {
                     
                     setBooks((prevArray) => [...(prevArray || []), ...js]);
                     setIter(iter + 1)    
-                    setShowLoadButton(true)                
+                    if(js.length != 0) setShowLoadButton(true)                
                 })
             }
         })
@@ -95,10 +99,13 @@ function  CatalogePage(cart: CartDTO) {
         setMaxPrice(newMax);
       }
     function applyFilters(){
-        setCatalogeDTO({maxPrice: maxPrice, minPrice: minPrice, sort: sortOption, genreId: selectedGenre})
+        setCatalogeDTO({maxPrice: maxPrice, minPrice: minPrice, sort: sortOption, genreId: selectedGenre, search: searchString})
     }
 
     useEffect(() => {
+
+       
+
         getCatalogeBooks(10, 1, catalogeDTO).then(res =>{
             if(!res.ok){
                 //error
@@ -106,19 +113,29 @@ function  CatalogePage(cart: CartDTO) {
                 res.json().then(js => {
                     setBooks(js);
                     setIter(2)
-                    setShowLoadButton(true)
+                    if(js.length !=0) setShowLoadButton(true)
                 })
             }
         })
     },[catalogeDTO])
 
+    useEffect(() => {
 
-
-
+        try{
+            const search = state.search; 
+            if(search) {
+                searchValue = search;
+                const updatedDTO = { ...catalogeDTO, search: searchValue }
+                console.log(updatedDTO)
+                setCatalogeDTO(updatedDTO)
+            }
+        }catch{
+        }
+    },[state])
 
     return (
         <>
-            <Header getCart={cart.getCart} setCart={cart.setCart}></Header>
+            <Header defaultSearchValue={searchValue} setSeatchCataloge={setSeatchString} getCart={cart.getCart} setCart={cart.setCart} ></Header>
             
             <p style={{ fontSize: '20px', fontWeight: 'bold', margin: "10px"}}>Каталог</p>
             <div className="filter-and-sort">

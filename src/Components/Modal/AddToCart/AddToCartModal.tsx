@@ -46,7 +46,6 @@ function AddToCartModal(props: AddToCartModal) {
 
     function clampCount(count: number){
         const existingItemIndex = props.book.cart.getCart.findIndex(item => item.id === props.book.id);
-        console.log(Math.min(Math.max(1, count), props.book.stock))
         if (existingItemIndex !== -1)
             return Math.min(Math.max(1, count), props.book.stock - props.book.cart.getCart[existingItemIndex].count);
         else

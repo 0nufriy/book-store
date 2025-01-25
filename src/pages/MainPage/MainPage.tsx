@@ -66,7 +66,7 @@ function  MainPage(cart: CartDTO) {
 
     return (
         <>
-            <Header getCart={cart.getCart} setCart={cart.setCart}></Header>
+            <Header defaultSearchValue={null} setSeatchCataloge={null} getCart={cart.getCart} setCart={cart.setCart}></Header>
             <div className="main-ganre">
                 {genre?.map((item, _) => 
                     <Genre name={item.genreName} key = {item.id} id = {item.id} image="https://hips.hearstapps.com/hmg-prod/images/best-romance-novels-2023-643811403d9fa.jpg?crop=0.6697674418604651xw:1xh;center,top&resize=1200:*"></Genre>
