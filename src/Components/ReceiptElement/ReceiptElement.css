@@ -1,0 +1,120 @@
+.receipt-element-container {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .receipt-element-header {
+    margin-bottom: 10px;
+  }
+  
+  .receipt-element-id {
+    margin-top: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  .receipt-element-address{
+    font-size: 1.3em;
+
+  }
+  .receipt-element-status{
+    font-size: 1.3em;
+  }
+  .receipt-element-user{
+    font-size: 1.1em;
+
+  }
+  
+ .receipt-element-status-button{
+    background-color: #000000;
+    width: 30%;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-right: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+  }
+
+  .receipt-element-status-button{
+    background-color: #000000;
+    width: 30%;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-right: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition:all 0.3s;
+  }
+
+  .receipt-element-cancel-button{
+    background-color: #b92222;
+  }
+
+  .receipt-element-status-button:hover{
+    opacity: 0.8;
+  }
+  .receipt-element-books-total {
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: right;
+    font-size: 1.3em;
+  }
+  .receipt-element-books-list {
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+  }
+  
+  .receipt-element-books-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .receipt-element-books-header{
+    font-size: 1.3em;
+  }
+
+  .receipt-element-book-item {
+    display: flex;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 10px;
+  }
+  
+  .receipt-element-book-image {
+    width: 150px;
+    height: max-content;
+    margin-right: 15px;
+    object-fit: cover; 
+    border-radius: 4px;
+  }
+  
+  .receipt-element-book-details {
+    flex-grow: 1;
+  }
+  
+  .receipt-element-book-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.2em;
+  }
+  
+  .receipt-element-book-author, .receipt-element-book-price, .receipt-element-book-count {
+    margin-bottom: 3px;
+    font-size: 1.1em;
+  }
+  .receipt-element-books-price-count{
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: right;
+    font-size: 1.1em;
+  }
+ 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import BookElement from "../../Components/BookElement/BookElement"
-import Footer from "../../Components/Footer/Footer"
 import Header from "../../Components/Header/Header"
 import "./CatalogePage.css"
 import { getAllGenre, getCatalogeBooks } from "../../http"
@@ -135,7 +134,7 @@ function  CatalogePage(cart: CartDTO) {
 
     return (
         <>
-            <Header defaultSearchValue={searchValue} setSeatchCataloge={setSeatchString} getCart={cart.getCart} setCart={cart.setCart} ></Header>
+            <Header onLogin={()=> {}} defaultSearchValue={searchValue} setSeatchCataloge={setSeatchString} getCart={cart.getCart} setCart={cart.setCart} ></Header>
             
             <p style={{ fontSize: '20px', fontWeight: 'bold', margin: "10px"}}>Каталог</p>
             <div className="filter-and-sort">
@@ -173,11 +172,11 @@ function  CatalogePage(cart: CartDTO) {
                             <BookElement key={item.id} cart={cart} id={item.id} name={item.bookName} price={item.price} stock={item.stock} image={item.image}></BookElement>
                         ) }
                     </div>
+                    {books?.length == 0 && <div className="cataloge-no-result"> Немає результатів</div>}
                 </div>
             
             {books && books.length > 0 && iter != -1 && showLoadButton ? <button onClick={load} className="main-load-more-button">Завантажити ще</button> : <div></div> }
             
-            <Footer></Footer>
         </>
     )
 

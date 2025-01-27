@@ -6,7 +6,7 @@ import { LoginDTO } from '../../../Models/req/LoginDTO';
 interface AuthModalDTO {
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
     setRegistrShow: React.Dispatch<React.SetStateAction<boolean>>,
-    
+    onLogin: () => void | null; 
 }
 
 function AuthModal(props: AuthModalDTO) {
@@ -41,6 +41,7 @@ function AuthModal(props: AuthModalDTO) {
             if(r.ok){
                 r.json().then( js => {
                     localStorage.setItem("TOKEN", js.token)
+                    props.onLogin()
                     props.setShow(false)
                 })
             }else{

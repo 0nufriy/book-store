@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import BookElement from "../../Components/BookElement/BookElement"
-import Footer from "../../Components/Footer/Footer"
 import Genre from "../../Components/Ganre/Genre"
 import Header from "../../Components/Header/Header"
 import "./MainPage.css"
@@ -28,7 +27,7 @@ function  MainPage(cart: CartDTO) {
                     
                     setBooks((prevArray) => [...(prevArray || []), ...js]);
                     setIter(iter + 1)    
-                    setShowLoadButton(true)                
+                    if(js.length != 0) setShowLoadButton(true)                
                 })
             }
         })
@@ -49,7 +48,7 @@ function  MainPage(cart: CartDTO) {
                 res.json().then(js => {
                     setBooks(js);
                     setIter(iter + 1)
-                    setShowLoadButton(true)
+                    if(js.length != 0) setShowLoadButton(true)
                 })
             }
         })
@@ -66,7 +65,7 @@ function  MainPage(cart: CartDTO) {
 
     return (
         <>
-            <Header defaultSearchValue={null} setSeatchCataloge={null} getCart={cart.getCart} setCart={cart.setCart}></Header>
+            <Header onLogin={()=> {}} defaultSearchValue={null} setSeatchCataloge={null} getCart={cart.getCart} setCart={cart.setCart}></Header>
             <div className="main-ganre">
                 {genre?.map((item, _) => 
                     <Genre name={item.genreName} key = {item.id} id = {item.id} image="https://hips.hearstapps.com/hmg-prod/images/best-romance-novels-2023-643811403d9fa.jpg?crop=0.6697674418604651xw:1xh;center,top&resize=1200:*"></Genre>
@@ -84,7 +83,6 @@ function  MainPage(cart: CartDTO) {
             
             {iter != -1 && showLoadButton ? <button onClick={load} className="main-load-more-button">Завантажити ще</button> : <div></div> }
             
-            <Footer></Footer>
         </>
     )
 

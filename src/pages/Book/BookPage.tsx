@@ -8,7 +8,6 @@ import { CartDTO } from "../../Models/generic/CartDTO";
 import AddToCartButton from "../../Components/AddToCartButton/AddToCartButton";
  import {BookElementProps} from "../../Components/BookElement/BookElement"
 import BackButton from "../../Components/BackButton/BackButton";
-import Footer from "../../Components/Footer/Footer";
 
 function BookPage(cart: CartDTO) {
 
@@ -67,7 +66,7 @@ function BookPage(cart: CartDTO) {
 
     return (
     <>
-        <Header defaultSearchValue={null} setSeatchCataloge={null} getCart={cart.getCart} setCart={cart.setCart}></Header>
+        <Header onLogin={()=> {}} defaultSearchValue={null} setSeatchCataloge={null} getCart={cart.getCart} setCart={cart.setCart}></Header>
         {book?
         <div>
             <div>
@@ -104,25 +103,24 @@ function BookPage(cart: CartDTO) {
                     <strong className="book-label">Опис:</strong>
                     <p className="book-value book-description">{book.description}</p>
                 </div>
-                <div className="book-detail-item">
+                {book.pagecount > 0 && <div className="book-detail-item">
                     <strong className="book-label">Кількість сторінок:</strong>
                     <span className="book-value">{book.pagecount}</span>
-                </div>
-                <div className="book-detail-item">
+                </div>}
+                {book.format.length > 1 && <div className="book-detail-item">
                     <strong className="book-label">Формат:</strong>
                     <span className="book-value">{book.format}</span>
-                </div>
-                <div className="book-detail-item">
+                </div>}
+                {book.cover.length > 1 && <div className="book-detail-item">
                     <strong className="book-label">Обкладинка:</strong>
                     <span className="book-value">{book.cover}</span>
-                </div>
+                </div>}
                 <div className="book-detail-item">
                     <strong className="book-label">ISBN:</strong>
                     <span className="book-value">{book.isbn}</span>
                 </div>
             </div>
         </div>
-        <Footer></Footer>
        </div>
         : <></>}
     </>

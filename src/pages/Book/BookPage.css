@@ -21,6 +21,7 @@
     display: flex; 
     flex-direction: column; 
     width: 100%; 
+    min-width: 55vw;
     margin-top: 20px; 
 }
 
@@ -109,6 +110,13 @@
     margin-bottom: 10px
 }
 
+.book-cover-image {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    border-radius: 4px;
+}
+
 @media (min-width: 800px) {
     .book-container {
         width: 90%;
@@ -174,12 +182,6 @@
     .book-add-to-cart-button {
         width: auto; 
         display: inline-block; 
-    }
-    .book-cover-image {
-        width: 100%;
-        max-width: 800px;
-        height: auto;
-        border-radius: 4px;
     }
     .book-image-title-cover {
         width: 100%

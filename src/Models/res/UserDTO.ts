@@ -1,12 +1,11 @@
 import { AddressDTO } from "./address";
 
-export interface GenreDTO {
+export interface UserDTO {
     id: number,
     login: string,
     email: string,
     phone: string,
     name: string,
     role: string,
-    token: string,
-    addresses: AddressDTO
+    addresses: AddressDTO[]
 }

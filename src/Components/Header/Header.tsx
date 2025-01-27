@@ -12,7 +12,8 @@ interface HeaderDTO {
     getCart: CartElementDTO[]
     setCart: React.Dispatch<React.SetStateAction<CartElementDTO[]>>,
     setSeatchCataloge: React.Dispatch<React.SetStateAction<string>> | null
-    defaultSearchValue: string | null
+    defaultSearchValue: string | null,
+    onLogin: () => void | null; 
 }
 
 function Header(cart: HeaderDTO) {
@@ -34,7 +35,8 @@ function Header(cart: HeaderDTO) {
     function CabinetButton(){
         if(!localStorage.getItem("TOKEN")) {
             setAuthModal(true)
-            return
+        }else{
+            navigate("/account")
         }
     }
 
@@ -61,8 +63,8 @@ function Header(cart: HeaderDTO) {
              setSearchResults([]);
            }
         };
-
-        fetchBooks();
+        if(!cart.setSeatchCataloge)
+            fetchBooks();
     }, [searchValue]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +75,8 @@ function Header(cart: HeaderDTO) {
     };
 
     const handleInputFocus = () => {
-        setIsFocused(true);
+        if(!cart.setSeatchCataloge)
+            setIsFocused(true);
     }
     function countStock(stock: number, id: number): number{
          const existingItemIndex = cart.getCart.findIndex(item => item.id === id);
@@ -140,10 +143,10 @@ function Header(cart: HeaderDTO) {
         </div>
         <div className="header-button-group">
             <button onClick={() => {setCartModal(true)}} className="header-button header-item">Кошик: {cartPrice} грн</button>
-            <button onClick={CabinetButton} className="header-button header-item">Особистий кабінет</button>
+            <button onClick={CabinetButton} className="header-button header-item">{localStorage.getItem("TOKEN")? "Особистий кабінет" : "Увійти"}</button>
         </div>
-        {showAuthModal ? <AuthModal setShow={setAuthModal} setRegistrShow={setRegistModal}></AuthModal> : <></>}
-        {showRegistModal ? <RegistModal setShow={setRegistModal} setLoginShow={setAuthModal}></RegistModal> : <></>}
+        {showAuthModal ? <AuthModal onLogin={cart.onLogin} setShow={setAuthModal} setRegistrShow={setRegistModal}></AuthModal> : <></>}
+        {showRegistModal ? <RegistModal onLogin={cart.onLogin} setShow={setRegistModal} setLoginShow={setAuthModal}></RegistModal> : <></>}
         {showCartModal ? <CartModal cart={cart} setShow={setCartModal}></CartModal> : <></>}
     </div>
     )

@@ -1,8 +1,5 @@
-export interface AddressDTO {
-    id: number,
+export interface AddAddressDTO {
     adressName: string,
-    adress: string,
-    userId: number,
     city: string,
     street: string,
     house: string,

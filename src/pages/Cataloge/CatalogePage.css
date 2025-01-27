@@ -52,6 +52,12 @@ flex: 1 1 150px;
   background-color: #1f1f1f;
 }
 
+.cataloge-no-result{
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 @media (max-width: 768px) {
 .filter-and-sort {
       flex-direction: column;

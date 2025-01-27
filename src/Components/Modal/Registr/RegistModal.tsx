@@ -6,7 +6,7 @@ import { RegistDTO } from '../../../Models/req/RegistDTO';
 interface RegistModalDTO {
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
     setLoginShow: React.Dispatch<React.SetStateAction<boolean>>,
-    
+    onLogin: () => void | null; 
 }
 
 
@@ -91,6 +91,7 @@ function RegistModal(props: RegistModalDTO) {
             if(r.ok){
                 r.json().then(js => {
                     localStorage.setItem("TOKEN", js.token)
+                    props.onLogin()
                     props.setShow(false)
                 })
             }else{
