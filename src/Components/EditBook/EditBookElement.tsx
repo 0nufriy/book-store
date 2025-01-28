@@ -22,7 +22,7 @@ const AdminBookCard: React.FC<AdminBookCardProps> = ({ book, genres, onSave }) =
 
     useEffect(() => {
         setEditedBook(book);
-        setIsImgBroken(false)
+        setIsImgBroken(true)
     }, [book]);
 
     useEffect(()=>{
