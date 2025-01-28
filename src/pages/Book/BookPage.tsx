@@ -8,6 +8,7 @@ import { CartDTO } from "../../Models/generic/CartDTO";
 import AddToCartButton from "../../Components/AddToCartButton/AddToCartButton";
  import {BookElementProps} from "../../Components/BookElement/BookElement"
 import BackButton from "../../Components/BackButton/BackButton";
+import Loading from "../../Components/Loading/Loading";
 
 function BookPage(cart: CartDTO) {
 
@@ -16,6 +17,8 @@ function BookPage(cart: CartDTO) {
     const [bookModal, setBookModal] = useState<BookElementProps | null>(null);
 
     const [disable, setDisablle] = useState<boolean>(false)
+    const [isLoading, setIsLodaing] = useState<boolean>(false)
+    const [isError, setIsError] = useState<boolean>(false)
 
     useEffect(() => {
         if(!book) return
@@ -27,7 +30,7 @@ function BookPage(cart: CartDTO) {
         }
     },[cart, book])
     useEffect(()=>{
-
+        setIsLodaing(true)
         if(bookid)
             getOneBook(bookid).then(r => {
                 if(r.ok){
@@ -44,15 +47,19 @@ function BookPage(cart: CartDTO) {
                             }
                             setBookModal(bookModal)
                         }else{
-                            //error
+                            setIsError(true)
                         }
                     })
                 }else{
-                    //error
+                    setIsError(true)
                 }
+            }).catch(()=>{
+                setIsError(true)
+            }).finally(()=>{
+                setIsLodaing(false)
             })
         else{
-            //error
+            setIsError(true)
         }
     },[bookid])
 
@@ -67,12 +74,15 @@ function BookPage(cart: CartDTO) {
     return (
     <>
         <Header onLogin={()=> {}} defaultSearchValue={null} setSeatchCataloge={null} getCart={cart.getCart} setCart={cart.setCart}></Header>
-        {book?
-        <div>
+        
             <div>
                 <BackButton></BackButton>
-                <h2 className="book-title">{book.bookName}</h2>
+                {book && <h2 className="book-title">{book.bookName}</h2>}
             </div>
+            <Loading isLoading={isLoading}></Loading>
+            {isError && <div className="general-error-message">Не вдаолся завантажити книгу</div> }
+            {book?
+            <div>
             <div className="book-container">
                 <div className="book-image-title-cover">
                     <div className="book-cover">

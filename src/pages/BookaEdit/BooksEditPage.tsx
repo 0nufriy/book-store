@@ -12,6 +12,7 @@ import AdminBookCard from "../../Components/EditBook/EditBookElement"
 import { UpdateBookDTO } from "../../Models/req/UpdateBookDTO"
 import Message from "../../Components/Message/Message"
 import { CreateBookDTO } from "../../Models/req/CreateBookDTO"
+import Loading from "../../Components/Loading/Loading"
 
 
 
@@ -30,6 +31,10 @@ function  BooksEditPage(cart: CartDTO) {
     const [messageType, setMessageType] = useState<"success" | "error">("success")
     const [showMessage, setShowMessage] = useState<boolean>(false)
 
+    const [isLoadingErr, setIsLoadingErr] = useState<boolean>(false)
+    const [isAuthErr, setIsAuthErr] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+
 
     
 
@@ -39,9 +44,11 @@ function  BooksEditPage(cart: CartDTO) {
       },[])
       
       function fetchUser(){
+        setIsAuthErr(false)
         getUser().then(r => {
             if(r.status == 401){
                 localStorage.removeItem("TOKEN")
+                setIsAuthErr(true)
                 return
             }
             if(r.ok){
@@ -49,8 +56,12 @@ function  BooksEditPage(cart: CartDTO) {
                     setUser(js)
                 })
             }else{
-                //error
+                setIsLoadingErr(true)
             }
+        }).catch(() => {
+            setIsLoadingErr(true)
+        }).finally(() => {
+            setIsLoading(false)
         })
     }
     useEffect(()=> {
@@ -58,17 +69,24 @@ function  BooksEditPage(cart: CartDTO) {
             loadBooks(1)
             getAllGenre().then(res => {
                 if(!res.ok){
-                    //error
+                    setIsLoadingErr(true)
                 }else{
                     res.json().then(js => {
                         setGenres(js)
                     })
                 }
+             }).catch(()=>{
+                setIsLoadingErr(true)
+             }).finally(()=> {
+                setIsLoading(false)
              })
         }
     },[user])
 
     function loadBooks(i: number){
+        setIsLoading(true)
+        setIsLoadingErr(false)
+        setShowLoadButton(false)
         setShowAddForm(searchValue.length < 3)
         const catalogeSearch: CatalogeDTO = {
             minPrice: 0,
@@ -88,8 +106,12 @@ function  BooksEditPage(cart: CartDTO) {
                     if(js.length != 0) setShowLoadButton(true)   
                 })
             }else{
-                //error
+                setIsLoadingErr(true)
             }
+        }).catch(()=>{
+            setIsLoadingErr(true)
+        }).finally(()=>{
+            setIsLoading(false)
         })
     }
 
@@ -125,6 +147,10 @@ function  BooksEditPage(cart: CartDTO) {
                 setMessageType("error")
                 setShowMessage(true)
             }
+        }).catch(()=>{
+            setMessageText("Не вдалося оновити книгу")
+            setMessageType("error")
+            setShowMessage(true)
         })
     }
 
@@ -154,6 +180,10 @@ function  BooksEditPage(cart: CartDTO) {
                 setMessageType("error")
                 setShowMessage(true)
             }
+        }).catch(()=>{
+            setMessageText("Не вдалося додати книгу")
+            setMessageType("error")
+            setShowMessage(true)
         })
     }
 
@@ -185,7 +215,9 @@ function  BooksEditPage(cart: CartDTO) {
                     {books.length > 0 && iter != -1 && showLoadButton && <button className="main-load-more-button" onClick={()=> loadBooks(iter)} >Завантажити ще</button> }
                 </div>
             }
-            {(!user || user.role == "user") && <div className="edit-books-auth-message">Для того, щоб редагувати книги необхідно бути адміністратором</div>}
+            <Loading isLoading={isLoading}></Loading>
+            {isLoadingErr && <div className="general-error-message">Не вдалося завантажити книги</div>}
+            {( isAuthErr && (!user || user.role == "user")) && <div className="general-error-message">Для того, щоб редагувати книги необхідно бути адміністратором</div>}
         </>
     )
 

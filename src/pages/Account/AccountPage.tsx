@@ -9,6 +9,7 @@ import {UpdateUserDTO} from "../../Models/req/UpdateUserDTO"
 import { AddAddressDTO } from "../../Models/req/AddAddressDTO"
 import BackButton from "../../Components/BackButton/BackButton"
 import { useNavigate } from "react-router-dom"
+import Loading from "../../Components/Loading/Loading"
 
 
 
@@ -18,6 +19,10 @@ function  AccountPage(cart: CartDTO) {
     const [unloginError,setUnloginError] = useState<boolean>(false)
     const [isEditing, setIsEditing] = useState(false);
     const [newAddress, setNewAddress] = useState<AddressDTO | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [isLoadingErr, setIsLoadingErr] = useState<boolean>(false)
+    const [isEditLoading, setEditLoading] = useState<boolean>(false)
+    const [isAddAddresLoading, setIsAddAddresLoading] = useState<boolean>(false)
 
     const navigate = useNavigate()
 
@@ -49,6 +54,8 @@ function  AccountPage(cart: CartDTO) {
 
     const handleSave = () => {
         if(user){
+            
+            setError("")
             if(user.name.length < 3){
                 setError("Ім'я закороткий")
                 setLoginErr(false)
@@ -89,16 +96,52 @@ function  AccountPage(cart: CartDTO) {
                 phone: user.phone,
                 name: user.name
             }
+            setEditLoading(true)
             UpdateUser(updateUserDTO).then(r => {
+                setIsEditing(false);
                 setError("")
                 setLoginErr(false)
                 setEmailErr(false)
                 setPhoneErr(false)
                 setNameErr(false)
-                setUserFromRequest(r)
+                if(r.status == 401){
+                    localStorage.removeItem("TOKEN")
+                    setUnloginError(true)
+                }
+                if(r.ok){
+                    r.json().then(js => {
+                        setUser(js)
+                        setInitualUser(js)
+                        setUnloginError(false)
+                        setNewAddress({
+                            id: 0,
+                            adressName: "",
+                            adress: "",
+                            userId: js.id,
+                            city: "",
+                            street: "",
+                            house: "",
+                            postalCode: "",
+        
+                        })
+                        setIsEditing(false);
+                    })
+                }else{
+                    setError("Не вдалося оновити данні користувача")
+                    setLoginErr(false)
+                    setEmailErr(false)
+                    setPhoneErr(false)
+                    setNameErr(false)
+                }
+            }).catch(()=>{
+                setError("Не вдалося оновити данні користувача")
+                setLoginErr(false)
+                setEmailErr(false)
+                setPhoneErr(false)
+                setNameErr(false)
+            }).finally(()=>{
+                setEditLoading(false)
             })
-            setInitualUser(user)
-            setIsEditing(false);
         }
         
     };
@@ -123,6 +166,9 @@ function  AccountPage(cart: CartDTO) {
     function fetchUser(){
         getUser().then(r => {
             setUserFromRequest(r)
+        }).catch(()=>{
+            setIsLoading(false)
+            setIsLoadingErr(true)
         })
     }
 
@@ -136,6 +182,7 @@ function  AccountPage(cart: CartDTO) {
                 setUser(js)
                 setInitualUser(js)
                 setUnloginError(false)
+                setIsLoading(false)
                 setNewAddress({
                     id: 0,
                     adressName: "",
@@ -150,7 +197,8 @@ function  AccountPage(cart: CartDTO) {
                 setIsEditing(false);
             })
         }else{
-            //error
+            setIsLoading(false)
+            setIsLoadingErr(true)
         }
     }
 
@@ -227,9 +275,39 @@ function  AccountPage(cart: CartDTO) {
             street: newAddress.street,
             city: newAddress.city,
           }
+          setIsAddAddresLoading(true)
           addAddress(addressToAdd).then(r=> {
             setNewAddress(null)
-            setUserFromRequest(r)
+            if(r.status == 401){
+                localStorage.removeItem("TOKEN")
+                setUnloginError(true)
+            }
+            if(r.ok){
+                r.json().then(js => {
+                    setUser(js)
+                    setInitualUser(js)
+                    setUnloginError(false)
+                    setIsLoading(false)
+                    setNewAddress({
+                        id: 0,
+                        adressName: "",
+                        adress: "",
+                        userId: js.id,
+                        city: "",
+                        street: "",
+                        house: "",
+                        postalCode: "",
+    
+                    })
+                    setIsEditing(false);
+                })
+            }else{
+                setAddressError("Не вдалося додати адресу")
+            }
+          }).catch(()=>{
+            setAddressError("Не вдалося додати адресу")
+          }).finally(()=>{
+            setIsAddAddresLoading(false)
           })
         }
      };
@@ -243,17 +321,17 @@ function  AccountPage(cart: CartDTO) {
      function exitAccount(){
         localStorage.removeItem("TOKEN")
         navigate("/")
-        
      }
 
     return (
         <>
             <Header onLogin={fetchUser} defaultSearchValue={null} setSeatchCataloge={null} getCart={cart.getCart} setCart={cart.setCart} ></Header>
             
-            {user &&
-                <>
+            
+                
                 <div className="account-head-buttons">
                     <BackButton></BackButton>
+                {user && <>
                     <button className="account-button account-head-button" onClick={() => navigate("/orderList")}  >
                             {user.role !="user"? "Замовлення" : "Мої замовлення" }
                     </button>
@@ -264,7 +342,13 @@ function  AccountPage(cart: CartDTO) {
                     <button onClick={exitAccount} className="account-button account-head-button account-head-button-exit" >
                             Вийти з аккаунту
                     </button>
+                </>}
                 </div>
+                
+                <Loading isLoading={isLoading}></Loading>
+                { isLoadingErr && <div className="general-error-message"> Не вдалося отримати данні з сервера. Спробуйте пізніше </div>}
+                {user &&
+                <>
                     <div className="account-page">
               <h2 className="account-title">Інформація про аккаунт</h2>
               <div className="account-content">
@@ -286,11 +370,18 @@ function  AccountPage(cart: CartDTO) {
                   </div>
                   {error.length >=0 && <div className="account-editing-error">{error}</div>}
                   <div className="account-actions">
-                    
+
                        {isEditing ?
                           <>
-                              <button className="account-button account-save-button" onClick={handleSave}>Зберегти</button>
-                              <button className="account-button account-cancel-button" onClick={handleCancel}>Скасувати</button>
+                            {isEditLoading ? 
+                                <Loading isLoading={true}></Loading>
+                            :
+                            <>
+                                
+                            <button className="account-button account-save-button" onClick={handleSave}>Зберегти</button>
+                            <button className="account-button account-cancel-button" onClick={handleCancel}>Скасувати</button>
+                          </> 
+                            }
                           </>
                        :
                           <button className="account-button account-edit-button" onClick={handleEdit}>Редагувати</button>
@@ -353,16 +444,17 @@ function  AccountPage(cart: CartDTO) {
                     />
                     
                     {addressError.length >=0 && <div className="account-editing-error">{addressError}</div>}
-                    <button className="account-button account-add-button" onClick={handleAddAddress}>
+                    <Loading isLoading={isAddAddresLoading} ></Loading>
+                    {!isAddAddresLoading && <button className="account-button account-add-button" onClick={handleAddAddress}>
                         Додати адресу
-                    </button>
+                    </button>}
                     </div>
               </div>
           </div>
         </>
               
     }
-            {unloginError && <div className="account-unlogin"> Не вдалося увійти в акаунт. Спробуйте авторизуватися ще раз</div>}
+            {unloginError && <div className="general-error-message"> Не вдалося увійти в акаунт. Спробуйте авторизуватися ще раз</div>}
         </>
     )
 

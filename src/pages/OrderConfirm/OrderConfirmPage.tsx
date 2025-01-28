@@ -10,6 +10,7 @@ import ComboBox from "../../Components/ComboBox/ComboBox"
 import { Options } from "../../Models/generic/Options"
 import { CreateReceiptDTO } from "../../Models/req/CreateReceiptDTO"
 import { BookReceiptDTO } from "../../Models/req/BookReceiptDTO"
+import Loading from "../../Components/Loading/Loading"
 
 
 
@@ -18,6 +19,8 @@ function  OrderConfirmPage(cart: CartDTO) {
     const [user,setUser] = useState<UserDTO | null>(null)
     const [selectedAddress,setSelectedAddress] = useState<number>(0)
     const [succses,setSeccses] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [isError, setIsError] = useState<boolean>(false)
 
     useEffect(()=> {
       fetchUser()
@@ -37,9 +40,9 @@ function  OrderConfirmPage(cart: CartDTO) {
                 r.json().then(js => {
                     setUser(js)
                 })
-            }else{
-                //error
             }
+        }).finally(()=>{
+            setIsLoading(false)
         })
     }
     
@@ -55,18 +58,24 @@ function  OrderConfirmPage(cart: CartDTO) {
                     }
                 })
             }
+            setIsLoading(true)
 
             createReceipt(createdRecepit).then(r => {
                 if(r.status == 401){
                     localStorage.removeItem("TOKEN")
+                    setUser(null)
                     return
                 }
                 if(r.ok){
                     cart.setCart([])
                     setSeccses(true)
                 }else{
-                    //error
+                    setIsError(true)
                 }
+            }).catch(()=>{
+                setIsError(true)
+            }).finally(()=>{
+                setIsLoading(false)
             })
         }
     }
@@ -93,8 +102,10 @@ function  OrderConfirmPage(cart: CartDTO) {
                         })} onSelect={handleSelect}></ComboBox>
                         </div>
                     }
-                     {user && cart.getCart.length !== 0 && selectedAddress != 0 && <button className="order-confirm-done-button" onClick={applayOrder}>Оформити замовлення</button>}
-                     {!user && cart.getCart.length !== 0  && <div className="order-confirm-auth-message">Для того, щоб Оформити замовлення необхідно увійти в аккаунт</div>}
+                    { isError && !succses && <div className="general-error-message"> Не вдалося створити замовлення. Спробуйте пізніше </div>}
+                    <Loading isLoading={isLoading}></Loading>
+                     {!isLoading && user && cart.getCart.length !== 0 && selectedAddress != 0 && <button className="order-confirm-done-button" onClick={applayOrder}>Оформити замовлення</button>}
+                     {!isLoading && !user && cart.getCart.length !== 0  && <div className="order-confirm-auth-message">Для того, щоб Оформити замовлення необхідно увійти в аккаунт</div>}
                      {succses  && <div className="order-confirm-success-message">Замовлення успішно створене ми зв'яжемося з вами для уточнення деталей</div>}
                 </div>
         </>

@@ -9,6 +9,7 @@ import { GenreDTO } from "../../Models/res/Genre"
 import PriceSlider from "../../Components/PriceSlider/PriceSlider"
 import { CatalogeDTO } from "../../Models/req/CatalogeDTO"
 import { useLocation } from "react-router-dom"
+import Loading from "../../Components/Loading/Loading"
 
 
 
@@ -39,6 +40,12 @@ function  CatalogePage(cart: CartDTO) {
         
     }
 
+
+    
+    const [isGenreLoading, setIsGanreLoading] = useState<boolean>(true)
+    const [isBooksLoading, setIsBooksLoading] = useState<boolean>(true)
+    const [isLoadingErr, setIsLoadingErr] = useState<boolean>(false)
+
     const [selectedGenre, setSelectedGenre] = useState<number>(genreIdDef);
     const [minPrice, setMinPrice] = useState<number>(0);
     const [maxPrice, setMaxPrice] = useState<number>(2000);
@@ -58,9 +65,10 @@ function  CatalogePage(cart: CartDTO) {
      
     function load() {
         setShowLoadButton(false)
+        setIsBooksLoading(true)
         getCatalogeBooks(10,iter, catalogeDTO).then(res =>{
             if(!res.ok){
-                //error
+                setIsLoadingErr(true)
             }else{
                 res.json().then(js => {
                     
@@ -69,7 +77,11 @@ function  CatalogePage(cart: CartDTO) {
                     if(js.length != 0) setShowLoadButton(true)                
                 })
             }
-        })
+        }).catch(()=>{
+            setIsLoadingErr(true)
+         }).finally(()=>{
+            setIsBooksLoading(false)
+         })
     }
 
     useEffect(()=> {
@@ -81,12 +93,16 @@ function  CatalogePage(cart: CartDTO) {
     useEffect(() => {
         getAllGenre().then(res => {
             if(!res.ok){
-                //error
+                setIsLoadingErr(true)
             }else{
                 res.json().then(js => {
                     setGenres(js)
                 })
             }
+         }).catch(()=>{
+            setIsLoadingErr(true)
+         }).finally(()=>{
+            setIsGanreLoading(false)
          })
     },[])
 
@@ -102,12 +118,9 @@ function  CatalogePage(cart: CartDTO) {
     }
 
     useEffect(() => {
-
-       
-
         getCatalogeBooks(10, 1, catalogeDTO).then(res =>{
             if(!res.ok){
-                //error
+                setIsLoadingErr(true)
             }else{
                 res.json().then(js => {
                     setBooks(js);
@@ -115,7 +128,11 @@ function  CatalogePage(cart: CartDTO) {
                     if(js.length !=0) setShowLoadButton(true)
                 })
             }
-        })
+        }).catch(()=>{
+            setIsLoadingErr(true)
+         }).finally(()=>{
+            setIsBooksLoading(false)
+         })
     },[catalogeDTO])
 
     useEffect(() => {
@@ -137,7 +154,8 @@ function  CatalogePage(cart: CartDTO) {
             <Header onLogin={()=> {}} defaultSearchValue={searchValue} setSeatchCataloge={setSeatchString} getCart={cart.getCart} setCart={cart.setCart} ></Header>
             
             <p style={{ fontSize: '20px', fontWeight: 'bold', margin: "10px"}}>Каталог</p>
-            <div className="filter-and-sort">
+            {genres.length > 0 &&
+                <div className="filter-and-sort">
                 <div className="sort">
                 
                     <label htmlFor="sortOptions">Сортувати: </label>
@@ -166,16 +184,20 @@ function  CatalogePage(cart: CartDTO) {
                 
                 <button className="apply-filter-button" onClick={applyFilters}>Застосувати</button>
             </div>
+            }
+            
                 <div>
                     <div className="main-cataloge">
                         {books?.map((item, _) => 
                             <BookElement key={item.id} cart={cart} id={item.id} name={item.bookName} price={item.price} stock={item.stock} image={item.image}></BookElement>
                         ) }
                     </div>
+                    <Loading isLoading={isBooksLoading || isGenreLoading}></Loading>
+                    { isLoadingErr && <div className="general-error-message"> Не вдалося завантажити книги. Спробуйте пізніше </div>}
                     {books?.length == 0 && <div className="cataloge-no-result"> Немає результатів</div>}
                 </div>
             
-            {books && books.length > 0 && iter != -1 && showLoadButton ? <button onClick={load} className="main-load-more-button">Завантажити ще</button> : <div></div> }
+            {!isLoadingErr && books && books.length > 0 && iter != -1 && showLoadButton ? <button onClick={load} className="main-load-more-button">Завантажити ще</button> : <div></div> }
             
         </>
     )

@@ -7,6 +7,7 @@ import { getReceipts, getUser } from "../../http"
 import { UserDTO } from "../../Models/res/UserDTO"
 import { ReceiptDTO } from "../../Models/res/ReceiptDTO"
 import ReceiptComponent from "../../Components/ReceiptElement/ReceiptElement"
+import Loading from "../../Components/Loading/Loading"
 
 
 
@@ -14,6 +15,8 @@ function  OrderList(cart: CartDTO) {
     const [user,setUser] = useState<UserDTO | null>(null)
     const [receipts,setReceipts] = useState<ReceiptDTO[]>([])
 
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [isError, setIsError] = useState<boolean>(false)
 
 
 
@@ -33,8 +36,12 @@ function  OrderList(cart: CartDTO) {
                         console.log(js)
                     })
                 }else{
-                    //error
+                    setIsError(true)
                 }
+            }).catch(()=>{
+                setIsError(true)
+            }).finally(()=>{
+                setIsLoading(false)
             })
         }
       },[user])
@@ -48,9 +55,11 @@ function  OrderList(cart: CartDTO) {
                 r.json().then(js => {
                     setUser(js)
                 })
-            }else{
-                //error
             }
+        }).catch(()=>{
+            setIsError(true)
+        }).finally(()=>{
+            setIsLoading(false)
         })
     }
 
@@ -67,7 +76,9 @@ function  OrderList(cart: CartDTO) {
                     )}
                 </div>
             </div>
-            {!user && <div className="order-list-auth-message">Для того, щоб переглянути ваші замовлення необхідно увійти в аккаунт</div>}
+            <Loading isLoading={isLoading}></Loading>
+            { isError && <div className="general-error-message"> Не вдалося завантажити замовлення. Спробуйте пізніше </div>}
+            { !isLoading && !user && !localStorage.getItem("TOKEN") && <div className="order-list-auth-message">Для того, щоб переглянути замовлення необхідно увійти в аккаунт</div>}
         </>
     )
 

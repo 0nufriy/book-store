@@ -20,7 +20,9 @@ const requestJSON = (options: any) => {
     }
     const defaults = {headers: headers};
     options = Object.assign({}, defaults, options);
-    return fetch(options.url,options)
+    return fetch(options.url,options).catch(error => {
+        throw  error
+    })
 }
 
 export function getAllBooks(){

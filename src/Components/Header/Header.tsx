@@ -7,6 +7,7 @@ import CartModal from "../Modal/Cart/CartModal"
 import { getSearchBooks } from "../../http"
 import { BookDTO } from "../../Models/res/Book"
 import { CartElementDTO } from "../../Models/generic/CartElementDTO"
+import Loading from "../Loading/Loading"
 
 interface HeaderDTO {
     getCart: CartElementDTO[]
@@ -46,17 +47,27 @@ function Header(cart: HeaderDTO) {
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const searchContainerRef = useRef<HTMLDivElement>(null);
 
+    
+    const [isError, setIsError] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
     useEffect(() => {
         const fetchBooks = async () => {
            if (searchValue.length >= 3) {
+            setIsLoading(true)
+            setIsError(false)
             getSearchBooks(searchValue).then(r => {
                 if(r.ok){
                     r.json().then(js => {
                         setSearchResults(js)
                     })
                 }else{
-                    //error
+                    setIsError(true)
                 }
+            }).catch(()=>{
+                setIsError(true)
+            }).finally(()=>{
+                setIsLoading(false)
             })
 
            } else {
@@ -138,8 +149,12 @@ function Header(cart: HeaderDTO) {
                 <div className='search-results'>
                      <p className="search-result-not-found">Нічого не знайдено</p>
                 </div>
-
              )}
+             <div className='search-results'>
+                <Loading isLoading={isLoading && isFocused && searchValue.length >=3}></Loading>
+                
+                { isError && isFocused && searchValue.length >=3 && <div className="general-error-message"> Не вдалося завантажити книги. Спробуйте пізніше </div>}
+             </div>
         </div>
         <div className="header-button-group">
             <button onClick={() => {setCartModal(true)}} className="header-button header-item">Кошик: {cartPrice} грн</button>

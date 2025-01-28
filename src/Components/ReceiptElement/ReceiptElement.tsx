@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { ReceiptDTO } from "../../Models/res/ReceiptDTO";
 import "./ReceiptElement.css"
 import { UpdateStatus } from "../../http";
+import Message from "../Message/Message";
+import Loading from "../Loading/Loading";
 
 interface ReceiptProps {
     receipt: ReceiptDTO;
@@ -12,6 +14,12 @@ const ReceiptComponent: React.FC<ReceiptProps> = ({ receipt, isAdmin }) => {
     const [receiptState, setReceiptState] = useState<ReceiptDTO>(receipt);
     const button1Ref = useRef(null)
     const button2Ref = useRef(null)
+    
+    const [messageText, setMessageText] = useState<string>("")
+    const [showMessage, setShowMessage] = useState<boolean>(false)
+
+    const [isLoading, setLoading] = useState<boolean>(false)
+    
   
     const toggleBooksExpansion = (e: React.MouseEvent<HTMLDivElement>) => {
       if(e.target != button1Ref.current && e.target != button2Ref.current)
@@ -26,28 +34,45 @@ const ReceiptComponent: React.FC<ReceiptProps> = ({ receipt, isAdmin }) => {
     };
   
     function changeStatus(){
+      setLoading(true)
       UpdateStatus(receiptState.id, receiptState.status + 1).then(r => {
         if(r.ok){
           setReceiptState({...receiptState, status: receiptState.status +1})
         }else{
-          //error
+          setShowMessage(true)
+          setMessageText("Не вдалося оновити статус")
         }
+      }).catch(()=>{
+        setShowMessage(true)
+        setMessageText("Не вдалося оновити статус")
+      }).finally(()=>{
+        setLoading(false)
       })
     }
     function cancelOrder(){
+      
+      setLoading(true)
       if(receiptState.status == 0){
         UpdateStatus(receiptState.id, 3).then(r => {
           if(r.ok){
             setReceiptState({...receiptState, status: 3})
           }else{
-            //error
+            setShowMessage(true)
+            setMessageText("Не вдалося оновити статус")
           }
+        }).catch(()=>{
+          setShowMessage(true)
+          setMessageText("Не вдалося оновити статус")
+        }).finally(()=>{
+          setLoading(false)
         })
       }
     }
 
     return (
       <div className="receipt-element-container" onClick={toggleBooksExpansion}>
+        
+        {showMessage && <Message message={messageText} type={"error"} onClose={()=> setShowMessage(false)}></Message>}
         <div className="receipt-element-header" >
           <p className="receipt-element-id">Замовлення № {receiptState.id}</p>
           <p className="receipt-element-address">Адреса доставки: {receiptState.address}</p>
@@ -59,9 +84,14 @@ const ReceiptComponent: React.FC<ReceiptProps> = ({ receipt, isAdmin }) => {
             </div>}
           <div>
             <p className="receipt-element-status" style={{color: receiptState.status == 0 ? "#e0982e"  : receiptState.status == 1 ? "#e0c82e" : receiptState.status == 2 ? "#61982b" : "red" }} >{statusMap[receiptState.status] || 'Невідомий статус'}</p>
-            {isAdmin && receiptState.status < 2 && <button ref={button1Ref} className="receipt-element-status-button" onClick={changeStatus}>Позначити { receiptState.status == 0 ? "\"В обробці\"" : "\"Відправлено\""}</button> } 
-            {isAdmin && receiptState.status < 1 && <button ref={button2Ref} className="receipt-element-status-button receipt-element-cancel-button" onClick={cancelOrder}>Скасувати</button>}
-          </div>
+            {isLoading ? <Loading isLoading={isLoading}></Loading> :
+            <>
+              {isAdmin && receiptState.status < 2 && <button ref={button1Ref} className="receipt-element-status-button" onClick={changeStatus}>Позначити { receiptState.status == 0 ? "\"В обробці\"" : "\"Відправлено\""}</button> } 
+              {isAdmin && receiptState.status < 1 && <button ref={button2Ref} className="receipt-element-status-button receipt-element-cancel-button" onClick={cancelOrder}>Скасувати</button>}
+       
+            </>}
+            
+               </div>
           <div className="receipt-element-books-total">
               Сума чеку: {receiptState.books.reduce((sum, book) => sum + book.price * book.count, 0)} грн
             </div>
