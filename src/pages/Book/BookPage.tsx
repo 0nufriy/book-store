@@ -2,19 +2,29 @@ import { useParams } from "react-router-dom";
 import Header from "../../Components/Header/Header"
 import "./BookPage.css"
 import { useEffect, useState } from "react";
-import { getOneBook } from "../../http";
+import { CreateComment, getOneBook, getUser, removeComment } from "../../http";
 import { BookDTO } from "../../Models/res/Book";
 import { CartDTO } from "../../Models/generic/CartDTO";
 import AddToCartButton from "../../Components/AddToCartButton/AddToCartButton";
  import {BookElementProps} from "../../Components/BookElement/BookElement"
 import BackButton from "../../Components/BackButton/BackButton";
 import Loading from "../../Components/Loading/Loading";
+import CommentCart from "../../Components/Comment/Comment";
+import { UserDTO } from "../../Models/res/UserDTO";
+import { CreateCommentDTO } from "../../Models/req/CreateCommentDTO";
+import Message from "../../Components/Message/Message";
 
 function BookPage(cart: CartDTO) {
 
     const {bookid} = useParams();
     const [book, setBook] = useState<BookDTO | null>(null);
     const [bookModal, setBookModal] = useState<BookElementProps | null>(null);
+    const [user, setUser] = useState<UserDTO | null>(null)
+    const [newCommentText, setNewCommentText] = useState(''); 
+    const [commentLoading, setCommentLoading] = useState<boolean>(false); 
+    const [commentErr, setCommentErr] = useState<boolean>(false); 
+    const [AddCommentErr, setAddCommentErr] = useState<boolean>(false); 
+
 
     const [disable, setDisablle] = useState<boolean>(false)
     const [isLoading, setIsLodaing] = useState<boolean>(false)
@@ -31,7 +41,7 @@ function BookPage(cart: CartDTO) {
     },[cart, book])
     useEffect(()=>{
         setIsLodaing(true)
-        if(bookid)
+        if(bookid){
             getOneBook(bookid).then(r => {
                 if(r.ok){
                     r.json().then(js => {
@@ -58,6 +68,16 @@ function BookPage(cart: CartDTO) {
             }).finally(()=>{
                 setIsLodaing(false)
             })
+            if(localStorage.getItem("TOKEN")){
+                getUser().then(r => {
+                    if (r.ok){
+                        r.json().then(js => {
+                            setUser(js)
+                        })
+                    }
+                })
+            }
+        }
         else{
             setIsError(true)
         }
@@ -69,8 +89,61 @@ function BookPage(cart: CartDTO) {
             setBookModal(updatedCart);
         }
     },[cart])
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setNewCommentText(event.target.value);
+    };
 
+    function hendlerDeleteComment(comentID: number){
+        if(book){
+            setCommentLoading(true)
+            setCommentErr(false)
+            removeComment(comentID).then(r => {
+                if(r.ok){
+                    const updatedComment = book.comments.filter((item) => item.id !== comentID);
+                    console.log(updatedComment)
+                    setBook({...book, comments: updatedComment});
+                }else{
+                    setCommentErr(true)
+                }
+            }).catch(()=> {
+                setCommentErr(true)
+            }).finally(()=> {
+                setCommentLoading(false)
+            })
+        }
+    }
 
+    function handleAddComment(){
+
+        if(newCommentText.length < 3){
+            setAddCommentErr(true)
+            return
+        }
+        setAddCommentErr(false)
+
+        if(book){
+            setCommentLoading(true)
+            setCommentErr(false)
+            let comment: CreateCommentDTO = {
+                bookId: book?.id,
+                message: newCommentText
+            }
+            CreateComment(comment).then(r => {
+                if(r.ok){
+                    r.json().then(js => {
+                        setNewCommentText("")
+                        setBook({...book, comments: [...book.comments, js]})
+                    })
+                }else{
+                    setCommentErr(true)
+                }
+            }).catch(()=> {
+                setCommentErr(true)
+            }).finally(()=> {
+                setCommentLoading(false)
+            })
+        }
+    };
     return (
     <>
         <Header onLogin={()=> {}} defaultSearchValue={null} setSeatchCataloge={null} getCart={cart.getCart} setCart={cart.setCart}></Header>
@@ -82,7 +155,7 @@ function BookPage(cart: CartDTO) {
             <Loading isLoading={isLoading}></Loading>
             {isError && <div className="general-error-message">Не вдаолся завантажити книгу</div> }
             {book?
-            <div>
+            <>
             <div className="book-container">
                 <div className="book-image-title-cover">
                     <div className="book-cover">
@@ -131,7 +204,42 @@ function BookPage(cart: CartDTO) {
                 </div>
             </div>
         </div>
-       </div>
+        <div className="book-comment-container">
+            <div className="book-comments">
+                
+                <div className="book-comment-lable">Коментарі</div>
+                {commentLoading ? 
+                <Loading isLoading={true}></Loading>
+                
+                :
+                <>
+                    {user &&
+                    <>
+                        <div className="book-comment-add-login">{user.login}</div>
+                        <div className="book-comment-add">
+                            <input
+                                className={AddCommentErr ? "book-comment-add-input-error" : "book-comment-add-input"}
+                                type="text"
+                                placeholder="Введіть ваш коментар..."
+                                value={newCommentText}
+                                onChange={handleInputChange}
+                            />
+                            <button onClick={handleAddComment}>
+                                Додати коментар
+                            </button>
+                        </div>
+                    </>}
+                    {commentErr && <Message message="Не вдалося виконати дію" type="error" onClose={()=> setCommentErr(false)}></Message>}
+
+                    {book.comments.map((item)=> 
+                        <CommentCart isAdmin={!!user && user.role != "user"} onDelete={hendlerDeleteComment} key={item.id} comment={item} ></CommentCart>
+                    )}
+                    {book.comments.length == 0 && <div className="book-comment-zero">Ще немає коментарів</div>}
+                </>
+                }
+            </div>
+        </div>
+       </>
         : <></>}
     </>
     )

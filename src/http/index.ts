@@ -1,6 +1,7 @@
 import { AddAddressDTO } from "../Models/req/AddAddressDTO";
 import { CatalogeDTO } from "../Models/req/CatalogeDTO";
 import { CreateBookDTO } from "../Models/req/CreateBookDTO";
+import { CreateCommentDTO } from "../Models/req/CreateCommentDTO";
 import { CreateReceiptDTO } from "../Models/req/CreateReceiptDTO";
 import { LoginDTO } from "../Models/req/LoginDTO";
 import { RegistDTO } from "../Models/req/RegistDTO";
@@ -136,7 +137,7 @@ export function addAddress(request: AddAddressDTO){
 
 export function removeAddress(id: number){
     return requestJSON({
-        url: BASE_URL + "/User/Delete/" + id,
+        url: BASE_URL + "/User/address/" + id,
         method: 'DELETE'
     });
 }
@@ -176,5 +177,20 @@ export function CreateBook(request: CreateBookDTO){
         url: BASE_URL + "/Book",
         method: 'POST',
         body: JSON.stringify(request)
+    });
+}
+
+export function CreateComment(request: CreateCommentDTO){
+    return requestJSON({
+        url: BASE_URL + "/Book/comment",
+        method: 'POST',
+        body: JSON.stringify(request)
+    });
+}
+
+export function removeComment(id: number){
+    return requestJSON({
+        url: BASE_URL + "/Book/comment/" + id,
+        method: 'DELETE'
     });
 }

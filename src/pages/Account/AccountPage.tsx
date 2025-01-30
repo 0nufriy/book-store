@@ -183,6 +183,7 @@ function  AccountPage(cart: CartDTO) {
                 setInitualUser(js)
                 setUnloginError(false)
                 setIsLoading(false)
+                setIsLoadingErr(false)
                 setNewAddress({
                     id: 0,
                     adressName: "",
@@ -346,7 +347,7 @@ function  AccountPage(cart: CartDTO) {
                 </div>
                 
                 <Loading isLoading={isLoading}></Loading>
-                { isLoadingErr && <div className="general-error-message"> Не вдалося отримати данні з сервера. Спробуйте пізніше </div>}
+                { isLoadingErr && !unloginError && <div className="general-error-message"> Не вдалося отримати данні з сервера. Спробуйте пізніше </div>}
                 {user &&
                 <>
                     <div className="account-page">

@@ -1,3 +1,4 @@
+import { CommentDTO } from "./Comment";
 import { GenreDTO } from "./Genre";
 
 export interface BookDTO {
@@ -13,5 +14,6 @@ export interface BookDTO {
     image: string,
     price: number,
     stock: number,
-    gener: GenreDTO
+    gener: GenreDTO,
+    comments: CommentDTO[]
 }

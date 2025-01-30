@@ -21,7 +21,7 @@ function  BooksEditPage(cart: CartDTO) {
     const [searchValue,setSearchValue] = useState<string>("")
 
     const [books, setBooks] = useState<BookDTO[]>([])
-    const [bookToAdd, setBookToAdd] = useState<BookDTO>({bookName: "", autor: "", genreId: 1, id: -1, description: "", pagecount: 0, format: "", isbn: "", cover: "", image:"", price: 0, stock: 0, gener: {id: 1, genreName: ""}} )
+    const [bookToAdd, setBookToAdd] = useState<BookDTO>({bookName: "", autor: "", genreId: 1, id: -1, description: "", pagecount: 0, format: "", isbn: "", cover: "", image:"", price: 0, stock: 0, gener: {id: 1, genreName: ""}, comments: []} )
    
     const [iter, setIter] = useState<number>(1)
     const [showLoadButton, setShowLoadButton] = useState<boolean>(false)
@@ -173,7 +173,7 @@ function  BooksEditPage(cart: CartDTO) {
                 setMessageText("Книгу успішно додано")
                 setMessageType("success")
                 setShowMessage(true)
-                setBookToAdd({bookName: "", autor: "", genreId: 1, id: -1, description: "", pagecount: 0, format: "", isbn: "", cover: "", image:"", price: 0, stock: 0, gener: {id: 1, genreName: ""}} )
+                setBookToAdd({bookName: "", autor: "", genreId: 1, id: -1, description: "", pagecount: 0, format: "", isbn: "", cover: "", image:"", price: 0, stock: 0, gener: {id: 1, genreName: ""}, comments: []} )
                 loadBooks(1)
             }else{
                 setMessageText("Не вдалося додати книгу")
