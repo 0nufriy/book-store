@@ -1,50 +1,82 @@
-# React + TypeScript + Vite
+# BookStoreFrontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+BookStoreFrontend is a frontend application for interacting with the BookStoreBackend API. It is developed using React and TypeScript.
 
-Currently, two official plugins are available:
+## Requirements
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- npm
+- Running instance of [BookStoreBackend](https://github.com/0nufriy/BookStoreBackend)
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Clone the repository:
 
-- Configure the top-level `parserOptions` property like this:
+   ```bash
+   git clone https://github.com/0nufriy/book-store.git
+   cd book-store
+   ```
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+2. Install dependencies:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+3. Configure the API endpoint in the `./src/http/index.ts` file:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+   ```js
+    const BASE_URL = "YOUR_URL";
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+## Usage
+
+Once the application is running, it will be available at `http://localhost:3000` (or another port specified in your environment settings). Ensure that the backend is running before using the frontend.
+
+## Screenshots
+
+### Main Page
+![Main Page](https://github.com/0nufriy/book-store/raw/image/MainPage.png)
+
+### Cataloge
+![Cataloge](https://github.com/0nufriy/book-store/raw/image/Ctaloge.png)
+
+### Search
+![Search](https://github.com/0nufriy/book-store/raw/image/Search.png)
+
+### Book Page
+![Book Page](https://github.com/0nufriy/book-store/raw/image/BookPage.png)
+
+### Add to Cart Modal
+![Add to Cart Modal](https://github.com/0nufriy/book-store/raw/image/AddToCartModal.png)
+
+### Cart Modal
+![Cart Modal](https://github.com/0nufriy/book-store/raw/image/CartModal.png)
+
+### Login Modal
+![Login Modal](https://github.com/0nufriy/book-store/raw/image/AuthModal.png)
+
+### Registr Modal
+![Registr Modal](https://github.com/0nufriy/book-store/raw/image/RegistrModal.png)
+
+### Account
+![Account](https://github.com/0nufriy/book-store/raw/image/Account.png)
+
+### Books Edit
+![Books Edit](https://github.com/0nufriy/book-store/raw/image/EditBook.png)
+
+### Order Confirm
+![Order Confirm](https://github.com/0nufriy/book-store/raw/image/OrderComfirm.png)
+
+### Orders List User
+![Orders List User](https://github.com/0nufriy/book-store/raw/image/OrderListUser.png)
+
+### Orders List Admin
+![Orders List Admin](https://github.com/0nufriy/book-store/raw/image/OrdersListAdmin.png)
