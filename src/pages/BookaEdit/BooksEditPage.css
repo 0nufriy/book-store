@@ -1,0 +1,22 @@
+.edit-books-container{
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-around
+}
+.edit-books{
+    width: 70%;
+    max-width: 800px;
+}
+.edit-books-no-result{
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.3em
+}
+@media (max-width: 800px){
+    .edit-books{
+        width: 100%;
+    }
+}

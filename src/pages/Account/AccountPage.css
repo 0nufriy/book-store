@@ -1,0 +1,162 @@
+.account-page {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+.account-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.account-subtitle {
+    text-align: left;
+    color: #333;
+    margin-bottom: 10px;
+     margin-top: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.account-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.account-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.account-label {
+    font-weight: bold;
+    width: 120px;
+    margin-right: 10px;
+    color: #555;
+}
+
+.account-value {
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 15px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    background-color: #fff;
+}
+
+.account-input {
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.account-input-error{
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 15px;
+    border: 1px solid red;
+    border-radius: 3px;
+}
+.account-input:focus {
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(168, 168, 168, 0.6);
+}
+.account-input-error:focus {
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(148, 24, 24, 0.6);
+}
+
+.account-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.account-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 1rem;
+}
+
+.account-button:hover {
+    opacity: 0.8;
+}
+.account-head-buttons{
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    margin-top: 10px
+}
+
+
+.account-head-button{
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2em;
+    background-color: white;
+    text-decoration: underline #333;
+    color:#333  
+}
+
+.account-head-button-exit{
+    color: #d9534f;
+    text-decoration: underline #d9534f;
+}
+
+.account-edit-button {
+    background-color: #000000;
+    color: white;
+}
+
+.account-save-button {
+    background-color: #000000;
+    color: white;
+}
+
+.account-cancel-button {
+    background-color: #3a3a3a;
+    color: rgb(255, 255, 255);
+}
+.account-editing-error{
+    color: red;
+    width: 100%;
+    text-align: center;
+}
+.account-no-address{
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.account-delete-button{
+    background-color: #d9534f;
+    color: white;
+}
+
+.account-add-address {
+    display: flex;
+    align-items: start;
+    padding: 10px;
+    flex-wrap: wrap;
+    gap: 10px
+}
+.account-add-button{
+    background-color: #000000;
+    color: white;
+    margin-left: 0px;
+    width: 100%;
+}
+@media (max-width: 600px){
+    .account-head-buttons{
+        flex-direction: column;
+        align-items: start;
+    }
+}

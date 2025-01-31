@@ -1,0 +1,14 @@
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 98vh;
+  }
+
+  .general-error-message{
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #ff0000;
+}

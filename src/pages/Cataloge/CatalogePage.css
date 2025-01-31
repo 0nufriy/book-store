@@ -1,0 +1,84 @@
+.filter-and-sort {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+.filter, .sort {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+.filter-and-sort label {
+  margin-right: 5px;
+  font-weight: bold;
+  font-size: 0.9em;
+  white-space: nowrap;
+  margin-bottom: 5px; 
+}
+.filter-and-sort input[type="number"],
+.filter-and-sort select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9em;
+  flex: 1 1 100px;
+  min-width: 0;
+  
+  max-height: 35px;
+  margin-bottom: 10px;
+}
+.filter-and-sort select {
+flex: 1 1 150px;
+}
+.apply-filter-button {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  align-self: flex-end;
+}
+.filter-and-sort .apply-filter-button:hover {
+  background-color: #1f1f1f;
+}
+
+.cataloge-no-result{
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+.filter-and-sort {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 5px;
+  }
+  .filter, .sort {
+    flex-direction: column;
+  align-items: flex-start;
+  }
+.filter-and-sort label {
+    margin-bottom: 3px;
+  }
+  .filter-and-sort input[type="number"],
+  .filter-and-sort select {
+      width: 100%;
+      margin-bottom: 10px;
+      margin-right: 0;
+  }
+  .apply-filter-button {
+      align-self: stretch;
+      margin-top: 0;
+  }
+}
